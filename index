@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Season Predictions 2025-2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        ::placeholder {
+            color: #6b7280;
+        }
+        .champion-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 3px #facc15; /* yellow-400 */
+        }
+        .champion-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .card-text-shadow {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-wider">NBA Season Predictions</h1>
+            <p class="text-lg sm:text-xl text-gray-400 mt-2 tracking-wide">2025-2026 Season</p>
+        </header>
+
+        <main class="max-w-4xl mx-auto bg-neutral-900 rounded-2xl shadow-lg p-6 sm:p-8">
+            <form id="prediction-form">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
+                    <!-- Conference Champions -->
+                    <div>
+                        <label for="east-champion" class="block text-sm font-medium text-gray-300 mb-1">East Champs</label>
+                        <select id="east-champion" class="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"></select>
+                    </div>
+                    <div>
+                        <label for="west-champion" class="block text-sm font-medium text-gray-300 mb-1">West Champs</label>
+                        <select id="west-champion" class="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"></select>
+                    </div>
+                    
+                    <!-- NBA Champion Selector -->
+                    <div id="nba-champion-container" class="md:col-span-2">
+                        <label class="block text-center text-sm font-medium text-gray-300 mb-2">
+                             <span class="bg-gradient-to-r from-yellow-300 to-amber-500 text-transparent bg-clip-text font-bold text-base">NBA Champions</span>
+                        </label>
+                        <div id="nba-champion-selector" class="flex justify-center gap-4">
+                            <button type="button" id="champ-btn-1" disabled class="champion-btn w-1/2 h-12 bg-neutral-800 border border-neutral-700 text-gray-500 font-bold py-2 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-3">Select East Champ</button>
+                            <button type="button" id="champ-btn-2" disabled class="champion-btn w-1/2 h-12 bg-neutral-800 border border-neutral-700 text-gray-500 font-bold py-2 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-3">Select West Champ</button>
+                        </div>
+                    </div>
+
+                    <!-- Individual Awards -->
+                    <div class="md:col-span-2 border-t border-neutral-700 pt-6">
+                        <h3 class="text-lg font-semibold text-center text-white mb-4 tracking-wider">Individual Awards</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                            <input type="text" data-award="mvp" placeholder="MVP" class="sm:col-span-2 w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" data-award="roty" placeholder="Rookie of the Year" class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" data-award="dpoy" placeholder="Defensive Player of the Year" class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" data-award="smoy" placeholder="Sixth Man of the Year" class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" data-award="mip" placeholder="Most Improved Player" class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" data-award="first-time-as" placeholder="First Time All-Star" class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" data-award="breakout" placeholder="Breakout Player" class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-white focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button id="generate-btn" type="button" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-300 flex items-center justify-center mx-auto">
+                        Generate Prediction Image
+                    </button>
+                </div>
+            </form>
+
+            <!-- Prediction Image Display -->
+            <div id="prediction-output" class="hidden mt-8">
+                 <h2 class="text-2xl font-bold text-center mb-4 text-white tracking-wider">Your Predictions</h2>
+                <div id="prediction-card" class="bg-neutral-900 text-white p-8 rounded-2xl relative overflow-hidden">
+                    <div class="absolute -top-16 -right-16 w-48 h-48 bg-indigo-500 rounded-full opacity-20 filter blur-2xl"></div>
+                    <div class="absolute -bottom-20 -left-20 w-56 h-56 bg-fuchsia-500 rounded-full opacity-20 filter blur-2xl"></div>
+
+                    <div class="text-center mb-6 relative z-10">
+                        <h3 class="text-3xl font-extrabold text-white tracking-wider card-text-shadow">2025-26 NBA Predictions</h3>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 relative z-10">
+                        <div id="card-east" class="p-4 rounded-lg flex items-center space-x-3 border-2 border-neutral-700">
+                            <img id="logo-east" src="" alt="East Logo" class="w-10 h-10 object-contain flex-shrink-0" onerror="this.style.display='none'">
+                            <div>
+                                <p class="text-sm font-semibold tracking-wider card-text-shadow">East Champs</p>
+                                <p id="output-east" class="text-lg font-bold card-text-shadow"></p>
+                            </div>
+                        </div>
+                        <div id="card-west" class="p-4 rounded-lg flex items-center space-x-3 border-2 border-neutral-700">
+                            <img id="logo-west" src="" alt="West Logo" class="w-10 h-10 object-contain flex-shrink-0" onerror="this.style.display='none'">
+                            <div>
+                                <p class="text-sm font-semibold tracking-wider card-text-shadow">West Champs</p>
+                                <p id="output-west" class="text-lg font-bold card-text-shadow"></p>
+                            </div>
+                        </div>
+                        <div class="sm:col-span-2 p-1 bg-gradient-to-br from-yellow-300 via-yellow-500 to-amber-600 rounded-lg">
+                            <div id="card-nba" class="p-4 rounded-md text-center flex items-center justify-center space-x-4">
+                                 <img id="logo-nba" src="" alt="NBA Logo" class="w-12 h-12 object-contain flex-shrink-0" onerror="this.style.display='none'">
+                                 <div>
+                                     <p class="text-sm font-semibold tracking-wider card-text-shadow">NBA Champions</p>
+                                     <p id="output-nba" class="text-2xl font-extrabold card-text-shadow"></p>
+                                 </div>
+                            </div>
+                        </div>
+                        <!-- Individual Awards Output -->
+                        <div id="card-mvp" class="sm:col-span-2 p-3 rounded-lg flex items-center space-x-3 border-2 border-neutral-700">
+                            <img id="logo-mvp" src="" alt="MVP Team" class="w-8 h-8 object-contain flex-shrink-0" onerror="this.style.display='none'"><p class="text-xs text-gray-200 font-semibold tracking-wider mr-auto card-text-shadow">MVP</p><p id="output-mvp" class="text-base font-bold card-text-shadow"></p>
+                        </div>
+                        <div id="card-roty" class="p-3 rounded-lg flex items-center space-x-3 border-2 border-neutral-700">
+                            <img id="logo-roty" src="" alt="ROTY Team" class="w-8 h-8 object-contain flex-shrink-0" onerror="this.style.display='none'"><p class="text-xs text-gray-200 font-semibold tracking-wider mr-auto card-text-shadow">Rookie of the Year</p><p id="output-roty" class="text-base font-bold card-text-shadow"></p>
+                        </div>
+                        <div id="card-dpoy" class="p-3 rounded-lg flex items-center space-x-3 border-2 border-neutral-700">
+                            <img id="logo-dpoy" src="" alt="DPOY Team" class="w-8 h-8 object-contain flex-shrink-0" onerror="this.style.display='none'"><p class="text-xs text-gray-200 font-semibold tracking-wider mr-auto card-text-shadow">Defensive Player of the Year</p><p id="output-dpoy" class="text-base font-bold card-text-shadow"></p>
+                        </div>
+                        <div id="card-smoy" class="p-3 rounded-lg flex items-center space-x-3 border-2 border-neutral-700">
+                            <img id="logo-smoy" src="" alt="SMOY Team" class="w-8 h-8 object-contain flex-shrink-0" onerror="this.style.display='none'"><p class="text-xs text-gray-200 font-semibold tracking-wider mr-auto card-text-shadow">Sixth Man of the Year</p><p id="output-smoy" class="text-base font-bold card-text-shadow"></p>
+                        </div>
+                        <div id="card-mip" class="p-3 rounded-lg flex items-center space-x-3 border-2 border-neutral-700">
+                            <img id="logo-mip" src="" alt="MIP Team" class="w-8 h-8 object-contain flex-shrink-0" onerror="this.style.display='none'"><p class="text-xs text-gray-200 font-semibold tracking-wider mr-auto card-text-shadow">Most Improved Player</p><p id="output-mip" class="text-base font-bold card-text-shadow"></p>
+                        </div>
+                        <div id="card-first-time-as" class="p-3 rounded-lg flex items-center space-x-3 border-2 border-neutral-700">
+                            <img id="logo-first-time-as" src="" alt="All-Star Team" class="w-8 h-8 object-contain flex-shrink-0" onerror="this.style.display='none'"><p class="text-xs text-gray-200 font-semibold tracking-wider mr-auto card-text-shadow">First Time All-Star</p><p id="output-first-time-as" class="text-base font-bold card-text-shadow"></p>
+                        </div>
+                        <div id="card-breakout" class="p-3 rounded-lg flex items-center space-x-3 border-2 border-neutral-700">
+                            <img id="logo-breakout" src="" alt="Breakout Team" class="w-8 h-8 object-contain flex-shrink-0" onerror="this.style.display='none'"><p class="text-xs text-gray-200 font-semibold tracking-wider mr-auto card-text-shadow">Breakout Player</p><p id="output-breakout" class="text-base font-bold card-text-shadow"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 text-center">
+                    <button id="download-btn" class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300">
+                        Download Image
+                    </button>
+                     <button id="start-over-btn" class="w-full sm:w-auto mt-4 sm:mt-0 sm:ml-4 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-300">
+                        Start Over
+                    </button>
+                </div>
+            </div>
+        </main>
+        <footer class="text-center mt-12 text-gray-500 text-sm">
+            <p>Created with Gemini.</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- DATA ---
+        const teams = { "Eastern": { "Atlantic": ["Boston Celtics", "Brooklyn Nets", "New York Knicks", "Philadelphia 76ers", "Toronto Raptors"], "Central": ["Chicago Bulls", "Cleveland Cavaliers", "Detroit Pistons", "Indiana Pacers", "Milwaukee Bucks"], "Southeast": ["Atlanta Hawks", "Charlotte Hornets", "Miami Heat", "Orlando Magic", "Washington Wizards"] }, "Western": { "Northwest": ["Denver Nuggets", "Minnesota Timberwolves", "Oklahoma City Thunder", "Portland Trail Blazers", "Utah Jazz"], "Pacific": ["Golden State Warriors", "Los Angeles Clippers", "Los Angeles Lakers", "Phoenix Suns", "Sacramento Kings"], "Southwest": ["Dallas Mavericks", "Houston Rockets", "Memphis Grizzlies", "New Orleans Pelicans", "San Antonio Spurs"] } };
+        const teamLogos = { 'Atlanta Hawks': 'atl', 'Boston Celtics': 'bos', 'Brooklyn Nets': 'bkn', 'Charlotte Hornets': 'cha', 'Chicago Bulls': 'chi', 'Cleveland Cavaliers': 'cle', 'Dallas Mavericks': 'dal', 'Denver Nuggets': 'den', 'Detroit Pistons': 'det', 'Golden State Warriors': 'gs', 'Houston Rockets': 'hou', 'Indiana Pacers': 'ind', 'Los Angeles Clippers': 'lac', 'Los Angeles Lakers': 'lal', 'Memphis Grizzlies': 'mem', 'Miami Heat': 'mia', 'Milwaukee Bucks': 'mil', 'Minnesota Timberwolves': 'min', 'New Orleans Pelicans': 'no', 'New York Knicks': 'ny', 'Oklahoma City Thunder': 'okc', 'Orlando Magic': 'orl', 'Philadelphia 76ers': 'phi', 'Phoenix Suns': 'phx', 'Portland Trail Blazers': 'por', 'Sacramento Kings': 'sac', 'San Antonio Spurs': 'sa', 'Toronto Raptors': 'tor', 'Utah Jazz': 'utah', 'Washington Wizards': 'wsh' };
+        const teamColors = {
+            'Atlanta Hawks': ['#E03A3E', '#C1D32F'], 'Boston Celtics': ['#007A33', '#BA9653'], 'Brooklyn Nets': ['#000000', '#FFFFFF'], 'Charlotte Hornets': ['#1D1160', '#00788C'], 'Chicago Bulls': ['#CE1141', '#000000'], 'Cleveland Cavaliers': ['#860038', '#041E42'], 'Dallas Mavericks': ['#00538C', '#002B5e'], 'Denver Nuggets': ['#0E2240', '#FEC524'], 'Detroit Pistons': ['#C8102E', '#006BB6'], 'Golden State Warriors': ['#006BB6', '#FDB927'], 'Houston Rockets': ['#CE1141', '#000000'], 'Indiana Pacers': ['#002D62', '#FDBB30'], 'Los Angeles Clippers': ['#C8102E', '#1D428A'], 'Los Angeles Lakers': ['#552583', '#FDB927'], 'Memphis Grizzlies': ['#5D76A9', '#12173F'], 'Miami Heat': ['#98002E', '#F9A01B'], 'Milwaukee Bucks': ['#00471B', '#EEE1C6'], 'Minnesota Timberwolves': ['#0C2340', '#236192'], 'New Orleans Pelicans': ['#0C2340', ' #C8102E'], 'New York Knicks': ['#006BB6', '#F58426'], 'Oklahoma City Thunder': ['#007AC1', '#EF3B24'], 'Orlando Magic': ['#0077C0', '#000000'], 'Philadelphia 76ers': ['#006BB6', '#ED174C'], 'Phoenix Suns': ['#1D1160', '#E56020'], 'Portland Trail Blazers': ['#E03A3E', '#000000'], 'Sacramento Kings': ['#5A2D81', '#63727A'], 'San Antonio Spurs': ['#C4CED3', '#000000'], 'Toronto Raptors': ['#CE1141', '#000000'], 'Utah Jazz': ['#002B5C', '#00471B'], 'Washington Wizards': ['#002B5C', '#E31837']
+        };
+        let selectedNbaChampion = '';
+        const apiKey = ""; // The Canvas environment will provide the key.
+
+        // --- DOM ELEMENTS ---
+        const eastChampionSelect = document.getElementById('east-champion');
+        const westChampionSelect = document.getElementById('west-champion');
+        const champBtn1 = document.getElementById('champ-btn-1');
+        const champBtn2 = document.getElementById('champ-btn-2');
+        const generateBtn = document.getElementById('generate-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const startOverBtn = document.getElementById('start-over-btn');
+        const predictionForm = document.getElementById('prediction-form');
+        const predictionOutput = document.getElementById('prediction-output');
+        const awardInputs = document.querySelectorAll('input[data-award]');
+
+        // --- FUNCTIONS ---
+        function populateSelect(selectElement, teamList, placeholder) {
+            selectElement.innerHTML = `<option value="" disabled selected>${placeholder}</option>`;
+            teamList.forEach(team => {
+                const option = document.createElement('option');
+                option.value = team;
+                option.textContent = team;
+                selectElement.appendChild(option);
+            });
+        }
+
+        function getLogoUrl(teamName) {
+            if (!teamName) return '';
+            const teamAbbr = teamLogos[teamName];
+            return teamAbbr ? `https://a.espncdn.com/i/teamlogos/nba/500/${teamAbbr}.png` : '';
+        }
+
+        function showMessage(text, isError = false) {
+            const messageBox = document.createElement('div');
+            messageBox.textContent = text;
+            messageBox.style.cssText = `position:fixed; top:20px; left:50%; transform:translateX(-50%); background-color: ${isError ? '#ef4444' : '#4f46e5'}; color: white; padding: 1rem; border-radius: 0.5rem; z-index: 100; box-shadow: 0 4px 6px rgba(0,0,0,0.1);`;
+            document.body.appendChild(messageBox);
+            setTimeout(() => messageBox.remove(), 3000);
+        }
+
+        function updateChampionSelector() {
+            const eastChamp = eastChampionSelect.value;
+            const westChamp = westChampionSelect.value;
+            
+            if (selectedNbaChampion && selectedNbaChampion !== eastChamp && selectedNbaChampion !== westChamp) {
+                selectedNbaChampion = '';
+                champBtn1.classList.remove('active');
+                champBtn2.classList.remove('active');
+            }
+            
+            updateButton(champBtn1, eastChamp, 'Select East Champ');
+            updateButton(champBtn2, westChamp, 'Select West Champ');
+        }
+
+        function updateButton(btn, teamName, placeholder) {
+            if (teamName) {
+                btn.innerHTML = `<img src="${getLogoUrl(teamName)}" alt="${teamName}" class="w-8 h-8 object-contain"><span>${teamName}</span>`;
+                btn.dataset.team = teamName;
+                btn.disabled = false;
+                btn.classList.remove('text-gray-500');
+            } else {
+                btn.innerHTML = `<span>${placeholder}</span>`;
+                btn.dataset.team = '';
+                btn.disabled = true;
+                btn.classList.add('text-gray-500');
+            }
+        }
+
+        function applyGradient(elementId, teamName) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const colors = teamColors[teamName] || ['#374151', '#1f2937']; // Default dark gray gradient
+            el.style.background = `linear-gradient(135deg, ${colors[0]} 0%, ${colors[1]} 100%)`;
+        }
+
+        function toggleButtonLoading(button, isLoading) {
+            if (isLoading) {
+                button.disabled = true;
+                button.dataset.originalText = button.innerHTML;
+                button.innerHTML = '<div class="spinner"></div>';
+            } else {
+                button.disabled = false;
+                button.innerHTML = button.dataset.originalText;
+            }
+        }
+
+        async function fetchPlayerTeamsInBulk(playerNames) {
+            if (!playerNames || playerNames.length === 0) return {};
+
+            const playerListString = playerNames.join(", ");
+            const prompt = `For the following list of NBA players: [${playerListString}], provide their current team as of the end of the 2024-2025 season. Respond with ONLY a JSON object where the keys are the player names (exactly as provided) and the values are their official team names (e.g., "Los Angeles Lakers"). If a player is a known 2025 draftee, use their drafted team. If a player is a free agent or not a known NBA player, use the value "Unknown".`;
+            
+            const properties = {};
+            playerNames.forEach(name => {
+                properties[name] = { type: "STRING" };
+            });
+            const schema = { type: "OBJECT", properties: properties, required: playerNames };
+
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig: { responseMimeType: "application/json", responseSchema: schema }
+            };
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) return {};
+                const result = await response.json();
+                const teamMap = JSON.parse(result.candidates[0].content.parts[0].text);
+                
+                const validatedTeamMap = {};
+                for (const playerName in teamMap) {
+                    const foundTeam = teamMap[playerName];
+                    validatedTeamMap[playerName] = teamLogos[foundTeam] ? foundTeam : null;
+                }
+                return validatedTeamMap;
+
+            } catch (error) {
+                console.error("Error fetching player teams in bulk:", error);
+                const errorMap = {};
+                playerNames.forEach(name => { errorMap[name] = null; });
+                return errorMap;
+            }
+        }
+
+        async function generatePrediction() {
+            toggleButtonLoading(generateBtn, true);
+            const predictions = {
+                east: eastChampionSelect.value,
+                west: westChampionSelect.value,
+                nba: selectedNbaChampion,
+            };
+
+            if (!predictions.east || !predictions.west || !predictions.nba) {
+                showMessage('Please select East, West, and NBA champions.', true);
+                toggleButtonLoading(generateBtn, false);
+                return;
+            }
+
+            const playerNamesToFetch = [];
+            awardInputs.forEach(input => {
+                const playerName = input.value.trim();
+                if (playerName) {
+                    playerNamesToFetch.push(playerName);
+                }
+            });
+
+            const playerTeamMap = await fetchPlayerTeamsInBulk(playerNamesToFetch);
+
+            awardInputs.forEach(input => {
+                const playerName = input.value.trim();
+                const award = input.dataset.award;
+                if (playerName) {
+                    predictions[award] = { name: playerName, team: playerTeamMap[playerName] || null };
+                } else {
+                    predictions[award] = { name: 'N/A', team: null };
+                }
+            });
+            
+            // Update card text and logos for champions
+            document.getElementById('output-east').textContent = predictions.east;
+            document.getElementById('logo-east').src = getLogoUrl(predictions.east);
+            document.getElementById('output-west').textContent = predictions.west;
+            document.getElementById('logo-west').src = getLogoUrl(predictions.west);
+            document.getElementById('output-nba').textContent = predictions.nba;
+            document.getElementById('logo-nba').src = getLogoUrl(predictions.nba);
+
+            // Update individual awards on card
+            Object.keys(predictions).forEach(key => {
+                if (typeof predictions[key] === 'object' && predictions[key] !== null) {
+                    const outputEl = document.getElementById(`output-${key}`);
+                    if (outputEl) {
+                        outputEl.textContent = predictions[key].name;
+                    }
+                    const logoEl = document.getElementById(`logo-${key}`);
+                    if (logoEl) {
+                        logoEl.src = getLogoUrl(predictions[key].team);
+                        logoEl.style.display = predictions[key].team ? 'block' : 'none';
+                    }
+                    applyGradient(`card-${key}`, predictions[key].team);
+                }
+            });
+
+            // Apply gradients for champions
+            applyGradient('card-east', predictions.east);
+            applyGradient('card-west', predictions.west);
+            
+            const nbaCard = document.getElementById('card-nba');
+            const nbaColors = teamColors[predictions.nba] || ['#374151', '#1f2937'];
+            nbaCard.style.background = `linear-gradient(135deg, ${nbaColors[0]} 0%, ${nbaColors[1]} 100%)`;
+            
+            predictionForm.classList.add('hidden');
+            predictionOutput.classList.remove('hidden');
+            toggleButtonLoading(generateBtn, false);
+        }
+
+        function startOver() {
+            predictionForm.classList.remove('hidden');
+            predictionOutput.classList.add('hidden');
+            predictionForm.reset();
+            initialize();
+        }
+
+        function downloadImage() {
+            html2canvas(document.getElementById('prediction-output'), {
+                scale: 3, useCORS: true, backgroundColor: '#111827'
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'nba-predictions-2026.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        function initialize() {
+            populateSelect(eastChampionSelect, Object.values(teams.Eastern).flat().sort(), 'Select East Champ');
+            populateSelect(westChampionSelect, Object.values(teams.Western).flat().sort(), 'Select West Champ');
+            updateChampionSelector();
+        }
+
+        // --- EVENT LISTENERS ---
+        generateBtn.addEventListener('click', generatePrediction);
+        downloadBtn.addEventListener('click', downloadImage);
+        startOverBtn.addEventListener('click', startOver);
+        eastChampionSelect.addEventListener('change', updateChampionSelector);
+        westChampionSelect.addEventListener('change', updateChampionSelector);
+        champBtn1.addEventListener('click', () => {
+            if (champBtn1.disabled) return;
+            selectedNbaChampion = champBtn1.dataset.team;
+            champBtn1.classList.add('active');
+            champBtn2.classList.remove('active');
+        });
+        champBtn2.addEventListener('click', () => {
+             if (champBtn2.disabled) return;
+            selectedNbaChampion = champBtn2.dataset.team;
+            champBtn2.classList.add('active');
+            champBtn1.classList.remove('active');
+        });
+
+        // --- INITIALIZATION ---
+        window.onload = initialize;
+    </script>
+</body>
+</html>
